@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0f172a" />
+<meta name="description" content="MindTrack — private wellness tracker." />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="manifest" href="manifest.json" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<title>MindTrack</title>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">
+        <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-dasharray="65 100" transform="rotate(-90 16 16)"/>
+          <circle cx="16" cy="16" r="4" fill="#10b981"/>
+        </svg>
+      </span>
+      <div class="brand-text">
+        <span class="brand-name">MindTrack</span>
+        <span class="brand-sub">Wellness</span>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span class="streak-chip" id="streakChip" title="Current streak">🔥 <span id="streakNum">0</span></span>
+      <button class="icon-btn" id="btnTheme" aria-label="Theme">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-btn" id="btnSettings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="screens">
+
+    <!-- HOME -->
+    <section class="screen active" id="screen-home" aria-label="Home">
+      <div class="greeting">
+        <h1 id="greetText">Hello</h1>
+        <p class="muted" id="greetDate"></p>
+      </div>
+
+      <div class="hero-card" id="scoreCard" role="button" tabindex="0">
+        <div class="hero-ring-wrap">
+          <svg class="hero-ring" viewBox="0 0 220 220">
+            <circle cx="110" cy="110" r="96" class="ring-bg"/>
+            <circle cx="110" cy="110" r="96" class="ring-fg" id="ringFg"/>
+          </svg>
+          <div class="hero-center">
+            <div class="hero-score" id="scoreNum">0</div>
+            <div class="hero-label">Wellness</div>
+          </div>
+        </div>
+        <div class="hero-message" id="scoreMessage">Log your first day to see your score</div>
+        <div class="hero-cta" id="scoreCta">
+          <span id="scoreCtaText">Start logging</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+
+      <!-- Today's Focus -->
+      <div class="focus-card" id="focusCard">
+        <div class="focus-icon">🎯</div>
+        <div class="focus-body">
+          <div class="focus-label">Today's focus</div>
+          <div class="focus-text" id="focusText">Make your first entry to unlock daily focus</div>
+        </div>
+      </div>
+
+      <div class="section-head"><h2>Today at a glance</h2><button class="link-btn" data-nav="track">Log now</button></div>
+      <div class="quick-grid" id="quickStats"></div>
+
+      <div class="section-head"><h2>Today's habits</h2><button class="link-btn" id="manageHabitsBtn">Manage</button></div>
+      <div class="card"><div class="habit-list" id="homeHabits"></div></div>
+
+      <div class="section-head"><h2>Suggested for you</h2></div>
+      <div class="suggested-scroll" id="suggestedHabits"></div>
+
+      <div class="footer-note"><span class="dot"></span> All data stays on your device</div>
+    </section>
+
+    <!-- TRACK -->
+    <section class="screen" id="screen-track" aria-label="Track">
+      <div class="screen-head">
+        <h1>Track Today</h1>
+        <p class="muted">Quick log — under 30 seconds</p>
+      </div>
+
+      <div class="mode-switch">
+        <button class="mode-btn active" data-mode="quick">Quick log</button>
+        <button class="mode-btn" data-mode="full">Full log</button>
+      </div>
+
+      <form id="logForm" class="card form-card" autocomplete="off">
+        <div class="field"><label for="logDate">Date</label><input type="date" id="logDate" required/></div>
+
+        <!-- Quick fields -->
+        <div class="form-group" data-group="quick">
+          <div class="form-section-head">
+            <span class="dot-icon">🌙</span>
+            <span>Sleep</span>
+            <button type="button" class="skip-btn" data-skip="sleep">Skip</button>
+          </div>
+          <div class="field" data-fld="sleep">
+            <label for="sleepHours">Sleep hours <span class="val" id="valSleep">7h</span></label>
+            <input type="range" id="sleepHours" min="0" max="14" step="0.5" value="7"/>
+          </div>
+
+          <div class="form-section-head">
+            <span class="dot-icon">💗</span>
+            <span>How you feel</span>
+            <button type="button" class="skip-btn" data-skip="feel">Skip</button>
+          </div>
+          <div class="field" data-fld="feel">
+            <label for="migraine">Migraine severity <span class="val" id="valMig">None</span></label>
+            <input type="range" id="migraine" min="0" max="10" step="1" value="0"/>
+          </div>
+          <div class="field" data-fld="feel">
+            <label for="stress">Stress <span class="val" id="valStress">Low</span></label>
+            <input type="range" id="stress" min="0" max="10" step="1" value="2"/>
+          </div>
+        </div>
+
+        <!-- Full-only fields -->
+        <div class="form-group hidden" data-group="full">
+          <div class="form-section-head">
+            <span class="dot-icon">😴</span>
+            <span>Sleep details</span>
+            <button type="button" class="skip-btn" data-skip="sleepDetails">Skip</button>
+          </div>
+          <div class="field" data-fld="sleepDetails">
+            <label for="sleepInt">Interruptions <span class="val" id="valInt">0</span></label>
+            <input type="range" id="sleepInt" min="0" max="10" step="1" value="0"/>
+          </div>
+
+          <div class="form-section-head">
+            <span class="dot-icon">☕</span>
+            <span>Intake</span>
+            <button type="button" class="skip-btn" data-skip="intake">Skip</button>
+          </div>
+          <div class="field" data-fld="intake">
+            <label for="caffeine">Caffeine (cups) <span class="val" id="valCaf">0</span></label>
+            <input type="range" id="caffeine" min="0" max="10" step="1" value="0"/>
+          </div>
+          <div class="field" data-fld="intake">
+            <label for="water">Water (glasses) <span class="val" id="valWater">0</span></label>
+            <input type="range" id="water" min="0" max="15" step="1" value="0"/>
+          </div>
+
+          <div class="form-section-head">
+            <span class="dot-icon">🤕</span>
+            <span>Body</span>
+            <button type="button" class="skip-btn" data-skip="body">Skip</button>
+          </div>
+          <div class="field" data-fld="body">
+            <label for="aches">Body aches <span class="val" id="valAches">None</span></label>
+            <input type="range" id="aches" min="0" max="10" step="1" value="0"/>
+          </div>
+
+          <div class="field collapsible">
+            <label class="toggle-label">
+              <input type="checkbox" id="periodToggle"/>
+              <span>Log period pain (optional)</span>
+            </label>
+            <div class="hidden mt-8" id="periodWrap">
+              <input type="range" id="periodPain" min="0" max="10" step="1" value="0"/>
+              <div class="val mt-4" id="valPeriod">None</div>
+            </div>
+          </div>
+
+          <div class="form-section-head">
+            <span class="dot-icon">✨</span>
+            <span>Custom fields</span>
+          </div>
+          <div id="customFieldsTrack"></div>
+          <button type="button" class="btn-ghost full-w" id="addCustomTrackBtn">+ Add custom field</button>
+        </div>
+
+        <div class="form-section-head">
+          <span class="dot-icon">✅</span>
+          <span>Habits</span>
+        </div>
+        <div class="field"><div class="habit-list" id="trackHabits"></div></div>
+
+        <div class="field">
+          <label for="notes">Notes (optional)</label>
+          <textarea id="notes" rows="2" placeholder="Anything notable today?"></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary">Save Log</button>
+        <p class="muted center small" id="saveStatus" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <!-- INSIGHTS -->
+    <section class="screen" id="screen-insights" aria-label="Insights">
+      <div class="screen-head">
+        <h1>Insights</h1>
+        <p class="muted">Patterns from your last 14 days</p>
+      </div>
+
+      <div id="patternUnlock" class="unlock-card hidden">
+        <div class="unlock-bar"><span id="unlockFill"></span></div>
+        <div class="unlock-text" id="unlockText">3 of 4 logs to unlock patterns</div>
+      </div>
+
+      <div class="section-head"><h2>This week</h2></div>
+      <div class="summary-grid" id="weeklySummary"></div>
+
+      <div class="section-head"><h2>Wellness trend</h2></div>
+      <div class="card">
+        <div class="bar-chart" id="trendChart"></div>
+        <div class="legend" id="trendLegend"></div>
+      </div>
+
+      <div class="section-head"><h2>Patterns</h2></div>
+      <div id="patternList"></div>
+
+      <div class="section-head"><h2>Progress</h2></div>
+      <div class="card"><div id="progressBlock"></div></div>
+    </section>
+
+    <!-- HISTORY -->
+    <section class="screen" id="screen-history" aria-label="History">
+      <div class="screen-head">
+        <h1>History</h1>
+        <p class="muted">All your logs</p>
+      </div>
+
+      <div class="filter-bar">
+        <input type="search" id="searchNotes" class="search-input" placeholder="🔍 Search notes…"/>
+        <div class="chip-row" id="filterChips">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="lowSleep">Low sleep</button>
+          <button class="chip" data-filter="highCaf">High caffeine</button>
+          <button class="chip" data-filter="highStress">High stress</button>
+          <button class="chip" data-filter="migraine">Migraine</button>
+          <button class="chip" data-filter="hasNotes">Has notes</button>
+        </div>
+        <div class="filter-row">
+          <select id="sortBy" class="pretty-select">
+            <option value="dateDesc">Newest first</option>
+            <option value="dateAsc">Oldest first</option>
+            <option value="scoreDesc">Best score</option>
+            <option value="scoreAsc">Lowest score</option>
+          </select>
+          <button class="btn-ghost small" id="exportData">Export</button>
+        </div>
+      </div>
+      <div id="historyList"></div>
+    </section>
+
+    <!-- LEARN -->
+    <section class="screen learn-screen" id="screen-learn" aria-label="Learn">
+      <div class="screen-head">
+        <h1>Learn</h1>
+        <p class="muted">Calm, simple wellness reads</p>
+      </div>
+      <div class="learn-tabs" id="learnTabs"></div>
+      <div id="learnContent"></div>
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="Primary">
+    <button class="tab active" data-nav="home" aria-label="Home"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></button>
+    <button class="tab" data-nav="track" aria-label="Track"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg><span>Track</span></button>
+    <button class="tab" data-nav="insights" aria-label="Insights"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>Insights</span></button>
+    <button class="tab" data-nav="history" aria-label="History"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></svg><span>History</span></button>
+    <button class="tab" data-nav="learn" aria-label="Learn"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M4 4v16"/></svg><span>Learn</span></button>
+  </nav>
+</div>
+
+<!-- ===== Settings Modal ===== -->
+<div class="modal" id="settingsModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><h2>Settings</h2><button class="icon-btn close-modal" data-close="settingsModal">✕</button></div>
+    <div class="modal-body">
+      <h3>Your targets</h3>
+      <div class="card">
+        <div class="field"><label for="tgtSleep">Ideal sleep (hours) <span class="val" id="tgtSleepVal">8</span></label><input type="range" id="tgtSleep" min="5" max="12" step="0.5" value="8"/></div>
+        <div class="field"><label for="tgtCaf">Max caffeine (cups) <span class="val" id="tgtCafVal">2</span></label><input type="range" id="tgtCaf" min="0" max="8" step="1" value="2"/></div>
+        <div class="field"><label for="tgtWater">Water target (glasses) <span class="val" id="tgtWaterVal">8</span></label><input type="range" id="tgtWater" min="3" max="15" step="1" value="8"/></div>
+      </div>
+
+      <h3>What you track</h3>
+      <p class="muted small">Toggle which fields appear in your full log.</p>
+      <div id="trackPrefsMgr" class="mgr"></div>
+
+      <h3>Data</h3>
+      <div class="row-buttons">
+        <button class="btn-secondary" id="importBtn">Import JSON</button>
+        <input type="file" id="importFile" accept="application/json" hidden/>
+        <button class="btn-danger" id="clearAll">Clear all data</button>
+      </div>
+      <p class="muted small center mt-16">All data stays on your device.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Habits Modal (Manage habits from Home) ===== -->
+<div class="modal" id="habitsModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><h2>Manage habits</h2><button class="icon-btn close-modal" data-close="habitsModal">✕</button></div>
+    <div class="modal-body">
+      <p class="muted small">Add, rename, reorder, or delete. Tap a habit name to rename.</p>
+      <div id="habitMgr" class="mgr"></div>
+      <div class="add-row">
+        <input type="text" id="newHabit" placeholder="New habit (e.g. Read 10 min)" maxlength="40"/>
+        <button class="btn-secondary" id="addHabit">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Custom Field Modal ===== -->
+<div class="modal" id="customFieldModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><h2>Add custom field</h2><button class="icon-btn close-modal" data-close="customFieldModal">✕</button></div>
+    <div class="modal-body">
+      <div class="field">
+        <label for="newCustom">Field name</label>
+        <input type="text" id="newCustom" placeholder="e.g. Mood, Screen time, Steps" maxlength="40"/>
+      </div>
+      <div class="field">
+        <label for="newCustomType">Type</label>
+        <select id="newCustomType" class="pretty-select">
+          <option value="scale">Scale 0–10</option>
+          <option value="number">Number</option>
+          <option value="check">Yes / No</option>
+        </select>
+      </div>
+      <button class="btn-primary" id="addCustom">Add field</button>
+      <h3>Existing custom fields</h3>
+      <div id="customMgr" class="mgr"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Score Modal ===== -->
+<div class="modal" id="scoreModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><h2>Wellness Score</h2><button class="icon-btn close-modal" data-close="scoreModal">✕</button></div>
+    <div class="modal-body" id="scoreBreakdown"></div>
+  </div>
+</div>
+
+<!-- ===== Onboarding Modal (4 steps) ===== -->
+<div class="modal" id="onboardModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <div class="onboard-progress"><span class="op-step active"></span><span class="op-step"></span><span class="op-step"></span><span class="op-step"></span></div>
+    <div class="modal-body" id="onboardBody"></div>
+  </div>
+</div>
+
+<!-- ===== Article Modal (Learn) ===== -->
+<div class="modal" id="articleModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><h2 id="articleTitle">Article</h2><button class="icon-btn close-modal" data-close="articleModal">✕</button></div>
+    <div class="modal-body" id="articleBody"></div>
+  </div>
+</div>
+
+<!-- ===== Recap Modal ===== -->
+<div class="modal" id="recapModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <div class="modal-head"><h2>Weekly recap</h2><button class="icon-btn close-modal" data-close="recapModal">✕</button></div>
+    <div class="modal-body" id="recapBody"></div>
+  </div>
+</div>
+
+<!-- ===== Identity Modal ===== -->
+<div class="modal" id="identityModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-handle"></div>
+    <div class="modal-body" id="identityBody"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast" aria-live="polite"></div>
+<script src="app.js" defer></script>
+</body>
+</html>
